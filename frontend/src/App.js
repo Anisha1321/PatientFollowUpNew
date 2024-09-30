@@ -86,7 +86,7 @@ const contractABI = [
     type: "function",
   },
 ];
-const contractAddress = "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318";
+const contractAddress = "0x2e95C4b08e2C420bC72A3cf07B5e6b180B6d3704";
 
 function App() {
   const [account, setAccount] = useState("");
@@ -99,7 +99,7 @@ function App() {
 
   useEffect(() => {
     async function loadBlockchainData() {
-      const provider = new Web3.providers.HttpProvider("http://127.0.0.1:8545/");
+      const provider = new Web3(window.ethereum);
       const web3 = new Web3(provider);
       const instance = new web3.eth.Contract(contractABI, contractAddress);
       const accounts = await web3.eth.getAccounts();
@@ -119,14 +119,14 @@ function App() {
 
   const getPatientDetails = async (event) => {
     event.preventDefault();
-console.log({patientAddress});
+    console.log({ patientAddress });
     const details = await contract.methods.getDetails(patientAddress).call();
-console.log(details);
+    console.log(details);
     setPatientDetails({
       name: details.name,
-      age: details.age,
-      followUpCount: details.followUpCount,
-      lastFollowUpDate: details.followUpDate,
+      age: Number(details.age),
+      followUpCount: Number(details.followUpCount),
+      lastFollowUpDate: Number(details.followUpDate),
     });
   };
 
